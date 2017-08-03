@@ -16,6 +16,8 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 
 /**
@@ -23,6 +25,8 @@ import javax.persistence.EntityManager;
  * @author humbhenri
  */
 public class UserJpaController implements Serializable {
+
+    private static final Logger LOGGER = Logger.getLogger(UserJpaController.class.getSimpleName());
 
     public UserJpaController(EntityManager em) {
         this.em = em;
@@ -51,6 +55,7 @@ public class UserJpaController implements Serializable {
                     oldUsernameOfProfessorCollectionProfessor = em.merge(oldUsernameOfProfessorCollectionProfessor);
                 }
             }
+            LOGGER.info("User criado com sucesso");
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findUser(user.getUsername()) != null) {
@@ -101,6 +106,7 @@ public class UserJpaController implements Serializable {
                     }
                 }
             }
+            LOGGER.log(Level.INFO, "User editado com sucesso: {0}", user);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -140,6 +146,7 @@ public class UserJpaController implements Serializable {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             em.remove(user);
+            LOGGER.info("User removido.");
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -190,5 +197,5 @@ public class UserJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

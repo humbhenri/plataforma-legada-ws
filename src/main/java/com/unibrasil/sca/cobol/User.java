@@ -122,7 +122,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.unibrasil.sca.cobol.User[ username=" + username + " ]";
+        return "User{" + "username=" + username + ", password=" + password + ", enabled=" + enabled + '}';
     }
     
 }

@@ -11,7 +11,6 @@ import javax.jws.WebService;
 import com.unibrasil.sca.cobol.exceptions.NonexistentEntityException;
 
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
 
 /**
  *
@@ -33,9 +32,10 @@ public class ProfessorWS {
     }
     
     @WebMethod(operationName = "createProfessor")
-    public void createProfessor(Professor professor) {
+    public Professor createProfessor(Professor professor) {
         ProfessorJpaController jpa = new ProfessorJpaController(EMF.createEntityManager());
         jpa.create(professor);
+        return professor;
     }
     
     @WebMethod(operationName = "editProfessor")

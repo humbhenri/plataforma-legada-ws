@@ -8,6 +8,8 @@ package com.unibrasil.sca.cobol;
 import com.unibrasil.sca.cobol.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -20,11 +22,14 @@ import javax.persistence.criteria.Root;
  */
 public class ProfessorJpaController implements Serializable {
 
+    private static final Logger LOGGER = Logger.getLogger(ProfessorJpaController.class.getSimpleName());
+
     private final EntityManager em;
 
     public ProfessorJpaController(EntityManager em) {
         this.em = em;
     }
+
     public EntityManager getEntityManager() {
         return this.em;
     }
@@ -43,6 +48,7 @@ public class ProfessorJpaController implements Serializable {
                 username = em.merge(username);
             }
             em.getTransaction().commit();
+            LOGGER.log(Level.INFO, "Professor criado com sucesso: {0}", professor);
         } finally {
             if (em != null) {
                 em.close();
@@ -70,6 +76,7 @@ public class ProfessorJpaController implements Serializable {
                 usernameNew = em.merge(usernameNew);
             }
             em.getTransaction().commit();
+            LOGGER.log(Level.INFO, "Professor editado com sucesso: {0}", professor);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -103,6 +110,7 @@ public class ProfessorJpaController implements Serializable {
             }
             em.remove(professor);
             em.getTransaction().commit();
+            LOGGER.info("Professor destruído");
         } finally {
             if (em != null) {
                 em.close();
@@ -152,5 +160,5 @@ public class ProfessorJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

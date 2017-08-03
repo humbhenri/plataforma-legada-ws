@@ -5,10 +5,10 @@
  */
 package com.unibrasil.sca.cobol;
 
-import javax.jws.Oneway;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
 
 /**
  *
@@ -16,15 +16,20 @@ import javax.jws.WebParam;
  */
 @WebService(serviceName = "UserWS")
 public class UserWS {
+    
+    private static final Logger LOGGER = Logger.getLogger(UserWS.class.getSimpleName());
 
-    /**
-     * Web service operation
-     */
     @WebMethod(operationName = "createUser")
     public void createUser(User user) throws Exception {
+        LOGGER.log(Level.INFO, "User recebido: {0}", user);
         UserJpaController jpa = new UserJpaController(EMF.createEntityManager());
         jpa.create(user);
     }
 
-    
+    @WebMethod(operationName = "getUser")
+    public User getUser(String username) throws Exception {
+        UserJpaController jpa = new UserJpaController(EMF.createEntityManager());
+        return jpa.findUser(username);
+    }
+
 }
