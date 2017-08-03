@@ -21,9 +21,9 @@ public class UserWS {
      * Web service operation
      */
     @WebMethod(operationName = "createUser")
-    public void createUser(String username, String password) throws Exception {
+    public void createUser(User user) throws Exception {
         UserJpaController jpa = new UserJpaController(EMF.createEntityManager());
-        jpa.create(new User(username, password, 1));
+        jpa.create(user);
     }
 
     
