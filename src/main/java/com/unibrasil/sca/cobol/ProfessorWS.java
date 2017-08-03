@@ -17,20 +17,20 @@ import javax.jws.WebParam;
 @WebService(serviceName = "ProfessorWS")
 public class ProfessorWS {
 
-    /**
-     * This is a sample web service operation
-     */
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
         return "Hello " + txt + " !";
     }
 
-    /**
-     * Web service operation
-     */
     @WebMethod(operationName = "getProfessors")
     public List<Professor> getProfessors() {
         ProfessorJpaController jpa = new ProfessorJpaController(EMF.createEntityManager());
         return jpa.findProfessorEntities();
+    }
+    
+    @WebMethod(operationName = "createProfessor")
+    public void createProfessor(Professor professor) {
+        ProfessorJpaController jpa = new ProfessorJpaController(EMF.createEntityManager());
+        jpa.create(professor);
     }
 }

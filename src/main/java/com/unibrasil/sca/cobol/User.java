@@ -50,7 +50,7 @@ public class User implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "enabled")
-    private short enabled;
+    private int enabled;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "username")
     private Collection<Professor> professorCollection;
 
@@ -61,7 +61,7 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public User(String username, String password, short enabled) {
+    public User(String username, String password, int enabled) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -83,11 +83,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public short getEnabled() {
+    public int getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(short enabled) {
+    public void setEnabled(int enabled) {
         this.enabled = enabled;
     }
 

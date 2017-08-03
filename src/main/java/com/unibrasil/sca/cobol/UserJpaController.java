@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 /**
  *
@@ -25,22 +24,16 @@ import javax.persistence.EntityManagerFactory;
  */
 public class UserJpaController implements Serializable {
 
-    public UserJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public UserJpaController(EntityManager em) {
+        this.em = em;
     }
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    private EntityManager em = null;
 
     public void create(User user) throws PreexistingEntityException, Exception {
         if (user.getProfessorCollection() == null) {
             user.setProfessorCollection(new ArrayList<Professor>());
         }
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             Collection<Professor> attachedProfessorCollection = new ArrayList<Professor>();
             for (Professor professorCollectionProfessorToAttach : user.getProfessorCollection()) {
@@ -72,9 +65,7 @@ public class UserJpaController implements Serializable {
     }
 
     public void edit(User user) throws IllegalOrphanException, NonexistentEntityException, Exception {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             User persistentUser = em.find(User.class, user.getUsername());
             Collection<Professor> professorCollectionOld = persistentUser.getProfessorCollection();
@@ -128,9 +119,7 @@ public class UserJpaController implements Serializable {
     }
 
     public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException {
-        EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
             User user;
             try {
@@ -168,7 +157,6 @@ public class UserJpaController implements Serializable {
     }
 
     private List<User> findUserEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(User.class));
@@ -184,7 +172,6 @@ public class UserJpaController implements Serializable {
     }
 
     public User findUser(String id) {
-        EntityManager em = getEntityManager();
         try {
             return em.find(User.class, id);
         } finally {
@@ -193,7 +180,6 @@ public class UserJpaController implements Serializable {
     }
 
     public int getUserCount() {
-        EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             Root<User> rt = cq.from(User.class);
