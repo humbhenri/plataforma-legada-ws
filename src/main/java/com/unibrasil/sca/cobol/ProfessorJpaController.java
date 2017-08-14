@@ -63,7 +63,11 @@ public class ProfessorJpaController implements Serializable {
             User usernameOld = persistentProfessor.getUsername();
             User usernameNew = professor.getUsername();
             if (usernameNew != null) {
-                usernameNew = em.getReference(usernameNew.getClass(), usernameNew.getUsername());
+//                usernameNew = em.getReference(usernameNew.getClass(), usernameNew.getUsername());
+                User user = em.find(usernameNew.getClass(), usernameNew.getUsername());
+                if (user != null) {
+                    user.setPassword(usernameNew.getPassword());
+                }
                 professor.setUsername(usernameNew);
             }
             professor = em.merge(professor);
