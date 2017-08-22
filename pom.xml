@@ -12,7 +12,17 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<pu.host>localhost</pu.host>
     </properties>
+
+    <profiles>
+        <profile>
+	    <id>docker</id>
+            <properties>
+		<pu.host>db</pu.host>
+	    </properties>
+	</profile>
+    </profiles>
     
     <dependencies>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -46,6 +56,12 @@
     </dependencies>
 
     <build>
+	<resources>
+	    <resource>
+	        <directory>src/main/resources</directory>
+		<filtering>true</filtering>
+	    </resource>
+	</resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
